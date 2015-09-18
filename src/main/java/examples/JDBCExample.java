@@ -1,7 +1,7 @@
 package examples;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JDBCExample {
@@ -23,7 +23,7 @@ public class JDBCExample {
 
         try {
             connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3307/test","root", "root");
+                    .getConnection("jdbc:mysql://localhost:3307/test", "root", "root");
 
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
@@ -36,7 +36,7 @@ public class JDBCExample {
         } else {
             System.out.println("Failed to make connection!");
         }
-        if(connection != null) {
+        if (connection != null) {
             java.sql.Statement stmt = connection.createStatement();
             String sql;
             sql = "SELECT * FROM users";
