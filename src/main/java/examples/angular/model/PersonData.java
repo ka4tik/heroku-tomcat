@@ -1,4 +1,4 @@
-package com.model;
+package examples.angular.model;
 
 public class PersonData {
 

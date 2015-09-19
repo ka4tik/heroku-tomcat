@@ -1,3 +1,5 @@
+package examples;
+
 @javax.servlet.annotation.WebServlet(name = "hello", urlPatterns = {"/hello"})
 public class HelloServlet extends javax.servlet.http.HttpServlet {
 

@@ -1,7 +1,7 @@
-package com.controller;
+package examples.angular.controller;
 
 import com.google.gson.Gson;
-import com.model.PersonData;
+import examples.angular.model.PersonData;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
