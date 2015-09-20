@@ -6,7 +6,7 @@ import messenger.model.Profile;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DatabaseClass {
+public class MockDatabaseClass {
 
     private static Map<Long, Message> messages = new HashMap<>();
     private static Map<String, Profile> profiles = new HashMap<>();

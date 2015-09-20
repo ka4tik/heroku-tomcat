@@ -1,6 +1,6 @@
 package messenger.service;
 
-import messenger.db.DatabaseClass;
+import messenger.db.MockDatabaseClass;
 import messenger.model.Comment;
 import messenger.model.Message;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class CommentMockService implements CommentService{
 
-    private Map<Long, Message> messages = DatabaseClass.getMessages();
+    private Map<Long, Message> messages = MockDatabaseClass.getMessages();
 
     public List<Comment> getAllComments(long messageId) {
         Map<Long, Comment> comments = messages.get(messageId).getComments();

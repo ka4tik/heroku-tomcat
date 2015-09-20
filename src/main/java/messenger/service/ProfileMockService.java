@@ -1,6 +1,6 @@
 package messenger.service;
 
-import messenger.db.DatabaseClass;
+import messenger.db.MockDatabaseClass;
 import messenger.model.Profile;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ProfileMockService implements  ProfileService{
 
-    private Map<String, Profile> profiles = DatabaseClass.getProfiles();
+    private Map<String, Profile> profiles = MockDatabaseClass.getProfiles();
 
 
     public ProfileMockService() {

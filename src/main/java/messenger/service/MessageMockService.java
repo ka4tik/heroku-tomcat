@@ -1,6 +1,6 @@
 package messenger.service;
 
-import messenger.db.DatabaseClass;
+import messenger.db.MockDatabaseClass;
 import messenger.model.Message;
 
 import java.text.DateFormat;
@@ -8,13 +8,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 
 public class MessageMockService implements MessageService {
 
-    private Map<Long, Message> messages = DatabaseClass.getMessages();
+    private Map<Long, Message> messages = MockDatabaseClass.getMessages();
 
 
     public MessageMockService() {
@@ -61,6 +62,7 @@ public class MessageMockService implements MessageService {
 
     public Message addMessage(Message message) {
         message.setId(messages.size() + 1);
+        message.setCreated(new Date());
         messages.put(message.getId(), message);
         return message;
     }

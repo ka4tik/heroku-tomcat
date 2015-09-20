@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <style>
+    </style>
+    <title>Messenger</title>
+</head>
+<body ng-controller="MessageController as ctrl">
+<h1>Messages</h1>
+<div>
+    <h2>Create message</h2>
+    <form ng-submit="ctrl.addMessage(newMessage)">
+        <label>Author:</label><input ng-model="newMessage.author"/>
+        <label>Message:</label><input ng-model="newMessage.message"/>
+        <input type="submit" value="Create"/>
+    </form>
+
+
+</div>
+<ul class="list-group" ng-repeat="message in ctrl.messages">
+    <li class="list-group-item">
+        <span>{{message.message}}</span></br>
+        <cite>By: {{message.author}} </cite></br>
+        <span>at {{message.created | date:'medium'}}</span>
+        <a ng-click="ctrl.deleteMessage(message)">Delete</a>
+
+        <form ng-submit="ctrl.updateMessage(message)">
+            <label>Author:</label><input ng-model="message.author"/>
+            <label>Message:</label><input ng-model="message.message"/>
+            <input type="submit" value="Update"/>
+        </form>
+    </li>
+</ul>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/angular-resource.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+</html>
