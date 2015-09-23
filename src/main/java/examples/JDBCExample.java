@@ -1,8 +1,19 @@
 package examples;
 
+import messenger.db.Database;
+import messenger.model.Message;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class JDBCExample {
 
@@ -49,7 +60,66 @@ public class JDBCExample {
             }
             rs.close();
             stmt.close();
+
+            Message message = new Message(1, "hello", "ka4tik");
+            System.out.println(addMessage(message, connection));
+
+            System.out.println(getAllMessages(connection));
             connection.close();
+        }
+
+
+    }
+
+    public static Message addMessage(Message message, Connection con) {
+        try {
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+//            Connection con = Database.getConnection();
+            PreparedStatement p = con.prepareStatement("INSERT INTO messages (message,created,author) VALUES(?,?,?)");
+
+            p.setString(1, message.getMessage());
+            p.setDate(2, sqlDate);
+            p.setString(3, message.getMessage());
+            boolean ok = p.execute();
+
+            p = con.prepareStatement("select id,created from  messages where message = ? and created = ? and author = ?");
+            p.setString(1, message.getMessage());
+            p.setDate(2, sqlDate);
+            p.setString(3, message.getMessage());
+            ResultSet resultSet = p.executeQuery();
+            resultSet.next();
+            message.setId(resultSet.getInt("id"));
+            message.setCreated(resultSet.getDate("created"));
+            resultSet.close();
+            p.close();
+            return message;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
+    public static List<Message> getAllMessages(Connection connection) {
+
+        try {
+//            Connection connection = Database.getConnection();
+            Statement stmt = connection.createStatement();
+            String sql;
+            sql = "SELECT * FROM messages";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            List<Message> messages = new ArrayList<>();
+            while (rs.next()) {
+                messages.add(new Message(rs.getInt("id"),rs.getString("message"),rs.getDate("created"),rs.getString("author")));
+            }
+            rs.close();
+            stmt.close();
+            return messages;
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
     }
 }

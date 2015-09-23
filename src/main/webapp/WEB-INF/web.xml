@@ -27,4 +27,10 @@
         <servlet-name>Jersey REST</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>InitDatabase</servlet-name>
+        <servlet-class>messenger.Application</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 </web-app>

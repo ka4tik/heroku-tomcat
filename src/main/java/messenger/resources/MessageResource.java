@@ -2,6 +2,7 @@ package messenger.resources;
 
 import messenger.model.Message;
 import messenger.resources.beans.MessageFilterBean;
+import messenger.service.DatabaseMessageService;
 import messenger.service.MessageMockService;
 import messenger.service.MessageService;
 
@@ -23,7 +24,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class MessageResource {
 
-    MessageService messageService = new MessageMockService();
+    MessageService messageService = new DatabaseMessageService();
 
     @GET
     public List<Message> getMessages(@BeanParam MessageFilterBean filterBean) {
