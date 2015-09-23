@@ -33,8 +33,9 @@ public class JDBCExample {
         Connection connection = null;
 
         try {
-            connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3307/test", "root", "root");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/test", "root", "root");
+
+//            connection = DriverManager.getConnection("jdbc:postgresql://localhost/singalk", "singalk", "");
 
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");

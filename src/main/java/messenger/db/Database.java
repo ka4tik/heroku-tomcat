@@ -15,8 +15,8 @@ public class Database {
         if (onHeroku.equals("1"))
             connection = getHerokuConnection();
         else
-            connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3307/test", "root", "root");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost/singalk", "singalk", "");
+//          connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/test", "root", "root");
     }
 
     private static Connection getHerokuConnection() throws URISyntaxException, SQLException {
