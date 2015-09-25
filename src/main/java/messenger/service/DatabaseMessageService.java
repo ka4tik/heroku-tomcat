@@ -8,8 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,25 +20,24 @@ public class DatabaseMessageService implements MessageService {
     public Message addMessage(Message message) {
         try {
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            Timestamp timestamp = new Timestamp(date.getTime());
             Connection con = Database.getConnection();
             PreparedStatement p = con.prepareStatement("INSERT INTO messages (message,created,author) VALUES(?,?,?)");
 
             p.setString(1, message.getMessage());
-            p.setDate(2, sqlDate);
-            p.setString(3, message.getMessage());
+            p.setTimestamp(2, timestamp);
+            p.setString(3, message.getAuthor());
             boolean ok = p.execute();
 
             p = con.prepareStatement("SELECT id,created FROM  messages WHERE message = ? AND created = ? AND author = ?");
             p.setString(1, message.getMessage());
-            p.setDate(2, sqlDate);
-            p.setString(3, message.getMessage());
+            p.setTimestamp(2, timestamp);
+            p.setString(3, message.getAuthor());
             ResultSet resultSet = p.executeQuery();
             resultSet.next();
             message.setId(resultSet.getInt("id"));
-            message.setCreated(resultSet.getDate("created"));
+            message.setCreated(new Date(resultSet.getTimestamp("created").getTime()));
             resultSet.close();
             p.close();
             return message;
@@ -61,7 +59,7 @@ public class DatabaseMessageService implements MessageService {
 
             List<Message> messages = new ArrayList<>();
             while (rs.next()) {
-                messages.add(new Message(rs.getInt("id"), rs.getString("message"), rs.getDate("created"), rs.getString("author")));
+                messages.add(new Message(rs.getInt("id"), rs.getString("message"), new Date(rs.getTimestamp("created").getTime()), rs.getString("author")));
             }
             rs.close();
             stmt.close();
@@ -90,7 +88,7 @@ public class DatabaseMessageService implements MessageService {
             p.setInt(1, (int) id);
             ResultSet rs = p.executeQuery();
             rs.next();
-            Message message = new Message(rs.getInt("id"), rs.getString("message"), rs.getDate("created"), rs.getString("author"));
+            Message message = new Message(rs.getInt("id"), rs.getString("message"), new Date(rs.getTimestamp("created").getTime()), rs.getString("author"));
             rs.close();
             p.close();
             return message;

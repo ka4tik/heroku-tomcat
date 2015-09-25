@@ -1,0 +1,1 @@
+CREATE TABLE messages (id SERIAL PRIMARY KEY,message varchar(2000) DEFAULT NULL,created timestamp  DEFAULT NULL,author varchar(50) DEFAULT NULL);
