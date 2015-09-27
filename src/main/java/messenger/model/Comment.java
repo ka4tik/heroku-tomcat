@@ -20,6 +20,12 @@ public class Comment {
         this.author = author;
         this.created = new Date();
     }
+    public Comment(long id, String message, Date created, String author) {
+        this.id = id;
+        this.message = message;
+        this.created = created;
+        this.author = author;
+    }
 
     public long getId() {
         return id;

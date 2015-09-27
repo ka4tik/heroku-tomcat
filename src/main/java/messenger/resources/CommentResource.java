@@ -3,6 +3,7 @@ package messenger.resources;
 import messenger.model.Comment;
 import messenger.service.CommentMockService;
 import messenger.service.CommentService;
+import messenger.service.DatabaseCommentService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class CommentResource {
 
-    private CommentService commentService = new CommentMockService();
+    private CommentService commentService = new DatabaseCommentService();
 
     @GET
     public List<Comment> getAllComments(@PathParam("messageId") long messageId) {

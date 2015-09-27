@@ -1,1 +1,3 @@
 CREATE TABLE messages (id SERIAL PRIMARY KEY,message varchar(2000) DEFAULT NULL,created timestamp  DEFAULT NULL,author varchar(50) DEFAULT NULL);
+
+CREATE TABLE comments (id SERIAL PRIMARY KEY,messageId INT,message varchar(2000) DEFAULT NULL,created timestamp  DEFAULT NULL,author varchar(50) DEFAULT NULL);

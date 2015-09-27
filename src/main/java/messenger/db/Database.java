@@ -12,7 +12,7 @@ public class Database {
 
     public static void initConnection() throws SQLException, URISyntaxException {
         String onHeroku = System.getenv().get("ON_HEROKU");
-        if (onHeroku.equals("1"))
+        if (onHeroku != null && onHeroku.equals("1"))
             connection = getHerokuConnection();
         else
             connection = DriverManager.getConnection("jdbc:postgresql://localhost/singalk", "singalk", "");
