@@ -8,27 +8,27 @@
     <title>Messenger</title>
 </head>
 <body>
-<div ng-controller="MessageController as ctrl">
+<div ng-controller="PostController as ctrl">
 
-    <h1>Messages</h1>
+    <h1>Posts</h1>
 
     <div>
-        <h2>Create message</h2>
+        <h2>Create post</h2>
 
-        <form ng-submit="ctrl.addMessage(newMessage)">
-            <label>Author:</label><input ng-model="newMessage.author"/>
-            <label>Message:</label><input ng-model="newMessage.message"/>
+        <form ng-submit="ctrl.addPost(newPost)">
+            <label>Author:</label><input ng-model="newPost.author"/>
+            <label>Post:</label><input ng-model="newPost.content"/>
             <input type="submit" value="Create"/>
         </form>
 
 
     </div>
-    <ul class="list-group" ng-repeat="message in ctrl.messages">
+    <ul class="list-group" ng-repeat="post in ctrl.posts">
         <li class="list-group-item">
-            <span>{{message.message}}</span></br>
-            <cite>By: {{message.author}} </cite></br>
-            <span>at {{message.created | date:'medium'}}</span>
-            <button type="button" class="btn btn-danger" ng-click="ctrl.deleteMessage(message)">Delete</button>
+            <span>{{post.content}}</span></br>
+            <cite>By: {{post.author}} </cite></br>
+            <span>at {{post.created | date:'medium'}}</span>
+            <button type="button" class="btn btn-danger" ng-click="ctrl.deletePost(post)">Delete</button>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Edit</button>
 
             <!-- Modal -->
@@ -37,12 +37,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Edit Message</h4>
+                            <h4 class="modal-title">Edit Post</h4>
                         </div>
                         <div class="modal-body">
-                            <form ng-submit="ctrl.updateMessage(message)">
-                                <label>Author:</label><input ng-model="message.author"/>
-                                <label>Message:</label><input ng-model="message.message"/>
+                            <form ng-submit="ctrl.updatePost(post)">
+                                <label>Content:</label><input ng-model="post.content"/>
+                                <label>Author:</label><input ng-model="post.author"/>
                                 <input type="submit" value="Update"/>
                             </form>
                         </div>
@@ -51,15 +51,15 @@
             </div>
 
 
-            <div ng-init="init(message.id)" ng-controller="CommentController as commentCtrl" >
+            <div ng-init="init(post.id)" ng-controller="CommentController as commentCtrl" >
                 <h5>Comments</h5>
                 <ul  class="list-group" ng-repeat="comment in commentCtrl.comments">
-                    <span><b>{{comment.author}}: </b></span>
+                    <span><b>{{comment.content}}: </b></span>
                     <span>{{comment.author}}</span>
                 </ul>
-                <form ng-submit="commentCtrl.addComment(message,newComment)">
+                <form ng-submit="commentCtrl.addComment(post,newComment)">
                     <label>Author:</label><input ng-model="newComment.author"/>
-                    <label>Message:</label><input ng-model="newComment.message"/>
+                    <label>Post:</label><input ng-model="newComment.content"/>
                     <input type="submit" value="comment"/>
                 </form>
             </div>

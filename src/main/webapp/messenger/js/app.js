@@ -1,33 +1,33 @@
 (function () {
 
-    //var prefix = "http://localhost:8080";
-    var prefix = "";
+    var prefix = "http://localhost:8080";
+   // var prefix = "";
     var app = angular.module('app', []);
 
-    app.controller('MessageController', ['$http', function ($http) {
+    app.controller('PostController', ['$http', function ($http) {
 
         var $this = this;
-        $http.get(prefix + '/api/messages/').success(function (response) {
-            $this.messages = response;
+        $http.get(prefix + '/api/posts/').success(function (response) {
+            $this.posts = response;
             return response;
         });
 
 
-        this.addMessage = function (message) {
-            $http.post(prefix + '/api/messages/', message).success(function (response) {
-                $this.messages.push(response);
+        this.addPost = function (post) {
+            $http.post(prefix + '/api/posts/', post).success(function (response) {
+                $this.posts.push(response);
                 return response;
             });
         };
 
-        this.deleteMessage = function (message) {
-            $http.delete(prefix + '/api/messages/' + message.id).success(function (response) {
-                $this.messages.splice($this.messages.indexOf(message), 1);
+        this.deletePost = function (post) {
+            $http.delete(prefix + '/api/posts/' + post.id).success(function (response) {
+                $this.posts.splice($this.posts.indexOf(post), 1);
             });
         };
 
-        this.updateMessage = function (message) {
-            $http.put(prefix + '/api/messages/' + message.id, message).success(function (response) {
+        this.updatePost = function (post) {
+            $http.put(prefix + '/api/posts/' + post.id, post).success(function (response) {
                 return response;
             });
         };
@@ -38,29 +38,29 @@
 
         var $this = this;
 
-        $scope.init = function(messageid){
-            return  $http.get(prefix + '/api/messages/' + messageid + "/comments/").success(function (response) {
+        $scope.init = function(postid){
+            return  $http.get(prefix + '/api/posts/' + postid + "/comments/").success(function (response) {
                 $this.comments = response;
                 return response;
             });
         };
 
 
-        this.addComment = function (message, comment) {
-            $http.post(prefix + '/api/messages/' + message.id + "/comments/", comment).success(function (response) {
+        this.addComment = function (post, comment) {
+            $http.post(prefix + '/api/posts/' + post.id + "/comments/", comment).success(function (response) {
                 $this.comments.push(response);
                 return response;
             });
         };
 
-        this.deleteComment = function (message, comment) {
-            $http.delete(prefix + '/api/messages/' + message.id + "/comments/").success(function (response) {
+        this.deleteComment = function (post, comment) {
+            $http.delete(prefix + '/api/posts/' + post.id + "/comments/").success(function (response) {
                 $this.comments.splice($this.comments.indexOf(comment), 1);
             });
         };
 
-        this.updateComment = function (message, comment) {
-            $http.put(prefix + '/api/messages/' + message.id + "/comments/" + comment.id, comment).success(function (response) {
+        this.updateComment = function (post, comment) {
+            $http.put(prefix + '/api/posts/' + post.id + "/comments/" + comment.id, comment).success(function (response) {
                 return response;
             });
         };

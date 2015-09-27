@@ -26,33 +26,33 @@ public class CommentResource {
     private CommentService commentService = new DatabaseCommentService();
 
     @GET
-    public List<Comment> getAllComments(@PathParam("messageId") long messageId) {
-        return commentService.getAllComments(messageId);
+    public List<Comment> getAllComments(@PathParam("postId") long postId) {
+        return commentService.getAllComments(postId);
     }
 
     @POST
-    public Comment addComment(@PathParam("messageId") long messageId, Comment comment) {
-        return commentService.addComment(messageId, comment);
+    public Comment addComment(@PathParam("postId") long postId, Comment comment) {
+        return commentService.addComment(postId, comment);
     }
 
     @PUT
     @Path("/{commentId}")
-    public Comment updateComment(@PathParam("messageId") long messageId, @PathParam("commentId") long id, Comment comment) {
+    public Comment updateComment(@PathParam("postId") long postId, @PathParam("commentId") long id, Comment comment) {
         comment.setId(id);
-        return commentService.updateComment(messageId, comment);
+        return commentService.updateComment(postId, comment);
     }
 
     @DELETE
     @Path("/{commentId}")
-    public void deleteComment(@PathParam("messageId") long messageId, @PathParam("commentId") long commentId) {
-        commentService.removeComment(messageId, commentId);
+    public void deleteComment(@PathParam("postId") long postId, @PathParam("commentId") long commentId) {
+        commentService.removeComment(postId, commentId);
     }
 
 
     @GET
     @Path("/{commentId}")
-    public Comment getMessage(@PathParam("messageId") long messageId, @PathParam("commentId") long commentId) {
-        return commentService.getComment(messageId, commentId);
+    public Comment getMessage(@PathParam("postId") long postId, @PathParam("commentId") long commentId) {
+        return commentService.getComment(postId, commentId);
     }
 
 }

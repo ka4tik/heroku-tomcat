@@ -9,7 +9,6 @@ public interface ProfileService {
 
      List<Profile> getAllProfiles() ;
 
-
      Profile getProfile(String profileName) ;
 
      Profile addProfile(Profile profile) ;

@@ -73,15 +73,15 @@ INSERT INTO `hello` VALUES (1,'kartik','ka4tik@gmail.com');
 UNLOCK TABLES;
 
 --
--- Table structure for table `messages`
+-- Table structure for table `posts`
 --
 
-DROP TABLE IF EXISTS `messages`;
+DROP TABLE IF EXISTS `posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `messages` (
+CREATE TABLE `posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `message` varchar(2000) DEFAULT NULL,
+  `post` varchar(2000) DEFAULT NULL,
   `created` timestamp DEFAULT NULL,
   `author` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -89,11 +89,11 @@ CREATE TABLE `messages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `messages`
+-- Dumping data for table `posts`
 --
 
-LOCK TABLES `messages` WRITE;
-/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+LOCK TABLES `posts` WRITE;
+/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

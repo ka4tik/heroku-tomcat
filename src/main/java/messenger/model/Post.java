@@ -7,27 +7,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 @XmlRootElement
-public class Message {
+public class Post {
 
     private long id;
-    private String message;
+    private String content;
     private Date created;
     private String author;
     private Map<Long, Comment> comments = new HashMap<>();
 
-    public Message() {
+    public Post() {
 
     }
 
-    public Message(long id, String message, String author) {
+    public Post(long id, String content, String author) {
         this.id = id;
-        this.message = message;
+        this.content = content;
         this.author = author;
         this.created = new Date();
     }
-    public Message(long id, String message, Date created, String author) {
+    public Post(long id, String content, Date created, String author) {
         this.id = id;
-        this.message = message;
+        this.content = content;
         this.author = author;
         this.created = created;
     }
@@ -40,12 +40,12 @@ public class Message {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getCreated() {
@@ -75,9 +75,9 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
+        return "Post{" +
                 "id=" + id +
-                ", message='" + message + '\'' +
+                ", content='" + content + '\'' +
                 ", created=" + created +
                 ", author='" + author + '\'' +
                 ", comments=" + comments +

@@ -1,7 +1,6 @@
 package examples;
 
-import messenger.db.Database;
-import messenger.model.Message;
+import messenger.model.Post;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -62,8 +61,8 @@ public class JDBCExample {
             rs.close();
             stmt.close();
 
-            Message message = new Message(1, "hello", "ka4tik");
-            System.out.println(addMessage(message, connection));
+            Post post = new Post(1, "hello", "ka4tik");
+            System.out.println(addMessage(post, connection));
 
             System.out.println(getAllMessages(connection));
             connection.close();
@@ -72,7 +71,7 @@ public class JDBCExample {
 
     }
 
-    public static Message addMessage(Message message, Connection con) {
+    public static Post addMessage(Post post, Connection con) {
         try {
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -81,29 +80,29 @@ public class JDBCExample {
 //            Connection con = Database.getConnection();
             PreparedStatement p = con.prepareStatement("INSERT INTO messages (message,created,author) VALUES(?,?,?)");
 
-            p.setString(1, message.getMessage());
+            p.setString(1, post.getContent());
             p.setDate(2, sqlDate);
-            p.setString(3, message.getMessage());
+            p.setString(3, post.getContent());
             boolean ok = p.execute();
 
             p = con.prepareStatement("select id,created from  messages where message = ? and created = ? and author = ?");
-            p.setString(1, message.getMessage());
+            p.setString(1, post.getContent());
             p.setDate(2, sqlDate);
-            p.setString(3, message.getMessage());
+            p.setString(3, post.getContent());
             ResultSet resultSet = p.executeQuery();
             resultSet.next();
-            message.setId(resultSet.getInt("id"));
-            message.setCreated(resultSet.getDate("created"));
+            post.setId(resultSet.getInt("id"));
+            post.setCreated(resultSet.getDate("created"));
             resultSet.close();
             p.close();
-            return message;
+            return post;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
-    public static List<Message> getAllMessages(Connection connection) {
+    public static List<Post> getAllMessages(Connection connection) {
 
         try {
 //            Connection connection = Database.getConnection();
@@ -112,13 +111,13 @@ public class JDBCExample {
             sql = "SELECT * FROM messages";
             ResultSet rs = stmt.executeQuery(sql);
 
-            List<Message> messages = new ArrayList<>();
+            List<Post> posts = new ArrayList<>();
             while (rs.next()) {
-                messages.add(new Message(rs.getInt("id"),rs.getString("message"),rs.getDate("created"),rs.getString("author")));
+                posts.add(new Post(rs.getInt("id"),rs.getString("message"),rs.getDate("created"),rs.getString("author")));
             }
             rs.close();
             stmt.close();
-            return messages;
+            return posts;
         } catch (SQLException e) {
             throw new RuntimeException();
         }

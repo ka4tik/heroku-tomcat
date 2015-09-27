@@ -6,7 +6,7 @@ public class Comment {
 
 
     private long id;
-    private String message;
+    private String content;
     private Date created;
     private String author;
 
@@ -14,15 +14,15 @@ public class Comment {
         //no-op
     }
 
-    public Comment(long id, String message, String author) {
+    public Comment(long id, String content, String author) {
         this.id = id;
-        this.message = message;
+        this.content = content;
         this.author = author;
         this.created = new Date();
     }
-    public Comment(long id, String message, Date created, String author) {
+    public Comment(long id, String content, Date created, String author) {
         this.id = id;
-        this.message = message;
+        this.content = content;
         this.created = created;
         this.author = author;
     }
@@ -35,12 +35,12 @@ public class Comment {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getCreated() {
