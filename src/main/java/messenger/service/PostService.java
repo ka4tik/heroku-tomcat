@@ -19,4 +19,6 @@ public interface PostService {
      Post updatePost(Post post);
 
      Post removePost(long id);
+
+     String getAuthor(long id);
 }

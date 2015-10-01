@@ -6,7 +6,6 @@ import messenger.model.Comment;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +70,7 @@ public class DatabaseCommentService implements CommentService {
             boolean ok = p.execute();
 
             p = connection.prepareStatement("SELECT id,created FROM  comments WHERE postid = ? AND content = ? AND created = ? AND author = ?");
-            p.setInt(1,(int) postId);
+            p.setInt(1, (int) postId);
             p.setString(2, comment.getContent());
             p.setTimestamp(3, timestamp);
             p.setString(4, comment.getAuthor());
@@ -82,8 +81,7 @@ public class DatabaseCommentService implements CommentService {
             resultSet.close();
             p.close();
             return comment;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

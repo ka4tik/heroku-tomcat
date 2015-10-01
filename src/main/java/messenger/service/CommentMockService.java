@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class CommentMockService implements CommentService{
 
-    private Map<Long, Post> messages = MockDatabaseClass.getMessages();
+    private Map<Long, Post> messages = MockDatabaseClass.getPosts();
 
     public List<Comment> getAllComments(long postId) {
         Map<Long, Comment> comments = messages.get(postId).getComments();

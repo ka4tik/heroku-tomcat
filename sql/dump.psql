@@ -1,3 +1,7 @@
 CREATE TABLE posts (id SERIAL PRIMARY KEY,content varchar(2000) DEFAULT NULL,created timestamp  DEFAULT NULL,author varchar(50) DEFAULT NULL);
 
 CREATE TABLE comments (id SERIAL PRIMARY KEY,postId INT,content varchar(2000) DEFAULT NULL,created timestamp  DEFAULT NULL,author varchar(50) DEFAULT NULL);
+
+CREATE TABLE users (username varchar(50) PRIMARY KEY,firstname varchar(50), password varchar(200) ,lastname varchar(50),created timestamp  DEFAULT NULL);
+
+CREATE TABLE tokens (token varchar(500) PRIMARY KEY, username varchar(50));

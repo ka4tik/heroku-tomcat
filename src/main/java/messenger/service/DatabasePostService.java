@@ -132,4 +132,23 @@ public class DatabasePostService implements PostService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public String getAuthor(long id) {
+        try {
+            Connection con = Database.getConnection();
+            PreparedStatement p = con.prepareStatement("SELECT author FROM  posts WHERE id = ?");
+            p.setInt(1, (int) id);
+            ResultSet rs = p.executeQuery();
+            if(rs.next())
+                rs.getString("author");
+            else
+                return null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 }

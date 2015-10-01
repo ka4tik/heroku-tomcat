@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class PostMockService implements PostService {
 
-    private Map<Long, Post> messages = MockDatabaseClass.getMessages();
+    private Map<Long, Post> messages = MockDatabaseClass.getPosts();
 
 
     public PostMockService() {
@@ -76,6 +76,11 @@ public class PostMockService implements PostService {
 
     public Post removePost(long id) {
         return messages.remove(id);
+    }
+
+    @Override
+    public String getAuthor(long id) {
+        return null;
     }
 
 }

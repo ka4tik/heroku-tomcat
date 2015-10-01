@@ -5,40 +5,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @XmlRootElement
-public class Profile {
+public class User {
 
-    private int id;
-    private String profileName;
+    private String username;
     private String firstName;
     private String lastName;
     private Date created;
 
-    public Profile() {
+    public User() {
         //no-op
     }
 
-    public Profile(int id, String profileName, String firstName, String lastName) {
-        this.id = id;
-        this.profileName = profileName;
+    public User( String username, String firstName, String lastName) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.created = new Date();
     }
-
-    public int getId() {
-        return id;
+    public User( String username, String firstName, String lastName,Date created) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.created =  created;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getUsername() {
+        return username;
     }
 
-    public String getProfileName() {
-        return profileName;
-    }
-
-    public void setProfileName(String profileName) {
-        this.profileName = profileName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {

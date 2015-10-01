@@ -1,7 +1,6 @@
 package messenger.resources;
 
 import messenger.model.Comment;
-import messenger.service.CommentMockService;
 import messenger.service.CommentService;
 import messenger.service.DatabaseCommentService;
 
