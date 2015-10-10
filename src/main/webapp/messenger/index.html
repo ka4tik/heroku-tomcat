@@ -54,8 +54,8 @@
             <div ng-init="init(post.id)" ng-controller="CommentController as commentCtrl" >
                 <h5>Comments</h5>
                 <ul  class="list-group" ng-repeat="comment in commentCtrl.comments">
-                    <span><b>{{comment.content}}: </b></span>
-                    <span>{{comment.author}}</span>
+                    <span><b>{{comment.author}}: </b></span>
+                    <span>{{comment.content}}</span>
                 </ul>
                 <form ng-submit="commentCtrl.addComment(post,newComment)">
                     <label>Author:</label><input ng-model="newComment.author"/>
