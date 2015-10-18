@@ -6,72 +6,21 @@
     <style>
     </style>
     <title>Messenger</title>
+    <script>
+    document.write('<base href="' + document.location + '" />');
+    </script>
 </head>
 <body>
-<div ng-controller="PostController as ctrl">
-
-    <h1>Posts</h1>
-
-    <div>
-        <h2>Create post</h2>
-
-        <form ng-submit="ctrl.addPost(newPost)">
-            <label>Author:</label><input ng-model="newPost.author"/>
-            <label>Post:</label><input ng-model="newPost.content"/>
-            <input type="submit" value="Create"/>
-        </form>
-
-
-    </div>
-    <ul class="list-group" ng-repeat="post in ctrl.posts">
-        <li class="list-group-item">
-            <span>{{post.content}}</span></br>
-            <cite>By: {{post.author}} </cite></br>
-            <span>at {{post.created | date:'medium'}}</span>
-            <button type="button" class="btn btn-danger" ng-click="ctrl.deletePost(post)">Delete</button>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Edit</button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Edit Post</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form ng-submit="ctrl.updatePost(post)">
-                                <label>Content:</label><input ng-model="post.content"/>
-                                <label>Author:</label><input ng-model="post.author"/>
-                                <input type="submit" value="Update"/>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div ng-init="init(post.id)" ng-controller="CommentController as commentCtrl" >
-                <h5>Comments</h5>
-                <ul  class="list-group" ng-repeat="comment in commentCtrl.comments">
-                    <span><b>{{comment.author}}: </b></span>
-                    <span>{{comment.content}}</span>
-                </ul>
-                <form ng-submit="commentCtrl.addComment(post,newComment)">
-                    <label>Author:</label><input ng-model="newComment.author"/>
-                    <label>Post:</label><input ng-model="newComment.content"/>
-                    <input type="submit" value="comment"/>
-                </form>
-            </div>
-
-        </li>
-    </ul>
-
-</div>
-
+<h1>Messenger</h1>
+<a href="#/signup">Sign Up</a>
+<ng-view></ng-view>
 </body>
-<script type="text/javascript" src="js/lib/angular.min.js"></script>
-<script type="text/javascript" src="js/app.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-route.min.js"></script>
+<script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+
 </html>

@@ -95,11 +95,11 @@ public class AuthenticationService {
     }
 
 
-    public boolean authenticateMessageRequest(long messageId, String authHeader) {
+    public boolean authenticatePostRequest(long postId, String authHeader) {
         if (null == authHeader)
             return false;
         final String token = authHeader.replaceFirst("Bearer ", "");
-        String author = postService.getAuthor(messageId);
+        String author = postService.getAuthor(postId);
         User user = getTokenOwner(token);
         return user != null && user.getUsername().equals(author);
     }

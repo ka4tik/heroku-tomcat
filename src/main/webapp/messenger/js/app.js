@@ -1,10 +1,51 @@
 (function () {
-
     //var prefix = "http://localhost:8080";
     var prefix = "";
-    var app = angular.module('app', []);
+    var app = angular.module('app', ['ngRoute','ngStorage']);
 
-    app.controller('PostController', ['$http', function ($http) {
+    app.config(function($routeProvider){
+        $routeProvider.when('/', {
+            templateUrl: 'partials/posts.html'}).
+        when('/signup', {
+            templateUrl: 'partials/signup.html',
+            controller: 'SignUpController'
+        })
+    });
+
+    app.controller('SignUpController', ['$http', function ($http) {
+
+        var $this = this;
+        this.login = function(username,password){
+            console.log("login called");
+            $http({
+                method: 'POST',
+                url: prefix + '/api/login/',
+                data: $.param({username: username, password:password}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (data) {
+                console.log(data.token);
+            }).error(function () {
+                alert("Invalid credentials");
+            });
+        };
+
+        this.signup = function(username,password){
+            console.log("register called");
+            $http({
+                method: 'POST',
+                url: prefix + '/api/signup/',
+                data: $.param({username: username, password:password}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (data) {
+                alert("Successfully signed up. You may login now");
+            }).error(function () {
+                alert("Something went wrong. Maybe username is already taken");
+            });
+        };
+
+
+    }]);
+        app.controller('PostController', ['$http', function ($http) {
 
         var $this = this;
         $http.get(prefix + '/api/posts/').success(function (response) {
