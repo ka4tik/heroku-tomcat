@@ -9,6 +9,7 @@ import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -37,13 +38,15 @@ public class PostResource {
     }
 
     @POST
-    public Post addPost(Post post) {
+    public Post addPost(@HeaderParam("Authorization") String authHeader, Post post) {
+        System.out.println(authHeader);
         return postService.addPost(post);
     }
 
     @PUT
     @Path("/{postId}")
-    public Post updatePost(@PathParam("postId") long id, Post post) {
+    public Post updatePost(@HeaderParam("Authorization") String authHeader,@PathParam("postId") long id, Post post) {
+        System.out.println(authHeader);
         post.setId(id);
         return postService.updatePost(post);
     }
