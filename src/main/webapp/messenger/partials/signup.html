@@ -4,10 +4,9 @@
     <input type="password" ng-model="password" placeholder="password"><br>
     <br>
 
-
+        <button ng-click="ctrl.signup(username,password)">SignUp</button>
     <button ng-click="ctrl.login(username,password)">Login</button>
     </div>
-    <button ng-click="ctrl.signup(username,password)">SignUp</button>
     <button ng-click="ctrl.logout()" ng-show="ctrl.isAuthed()">Logout</button>
 
 </div>

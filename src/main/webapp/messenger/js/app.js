@@ -1,40 +1,50 @@
 (function () {
     //var prefix = "http://localhost:8080";
     var prefix = "";
-    var app = angular.module('app', ['ngRoute','ngStorage']);
+    var app = angular.module('app', ['ngRoute', 'LocalStorageModule']);
 
-    app.config(function($routeProvider){
+    app.config(function ($routeProvider,localStorageServiceProvider) {
+        localStorageServiceProvider
+            .setPrefix('messenger')
+            .setStorageType('localStorage')
+            .setNotify(false, false);
+
         $routeProvider.when('/', {
-            templateUrl: 'partials/posts.html'}).
-        when('/signup', {
-            templateUrl: 'partials/signup.html',
-            controller: 'SignUpController'
-        })
+            templateUrl: 'partials/posts.html'
+        }).
+            when('/signup', {
+                templateUrl: 'partials/signup.html',
+                controller: 'SignUpController'
+            })
     });
 
-    app.controller('SignUpController', ['$http', function ($http) {
+    app.controller('SignUpController', ['$http','localStorageService', function ($http,localStorageService) {
 
-        var $this = this;
-        this.login = function(username,password){
+        this.login = function (username, password) {
             console.log("login called");
             $http({
                 method: 'POST',
                 url: prefix + '/api/login/',
-                data: $.param({username: username, password:password}),
+                data: $.param({username: username, password: password}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
                 console.log(data.token);
+                var storageType = localStorageService.getStorageType();
+                console.log(storageType);
+                localStorageService.set('token', data.token);
+                console.log("from localstorge " + localStorageService.get('token'));
+
             }).error(function () {
                 alert("Invalid credentials");
             });
         };
 
-        this.signup = function(username,password){
-            console.log("register called");
+        this.signup = function (username, password) {
+            console.log("signup called");
             $http({
                 method: 'POST',
                 url: prefix + '/api/signup/',
-                data: $.param({username: username, password:password}),
+                data: $.param({username: username, password: password}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
                 alert("Successfully signed up. You may login now");
@@ -43,9 +53,17 @@
             });
         };
 
+        this.isAuthed = function(){
+            console.log("from isAuthed" + localStorageService.get('token'));
+            return localStorageService.get('token')!=null;
+        };
+        this.logout = function(){
+            localStorageService.remove('token');
+        };
+
 
     }]);
-        app.controller('PostController', ['$http', function ($http) {
+    app.controller('PostController', ['$http', function ($http) {
 
         var $this = this;
         $http.get(prefix + '/api/posts/').success(function (response) {
@@ -75,12 +93,12 @@
 
     }]);
 
-    app.controller('CommentController', ['$http','$scope', function ($http,$scope) {
+    app.controller('CommentController', ['$http', '$scope', function ($http, $scope) {
 
         var $this = this;
 
-        $scope.init = function(postid){
-            return  $http.get(prefix + '/api/posts/' + postid + "/comments/").success(function (response) {
+        $scope.init = function (postid) {
+            return $http.get(prefix + '/api/posts/' + postid + "/comments/").success(function (response) {
                 $this.comments = response;
                 return response;
             });
