@@ -5,8 +5,8 @@
     <div>
         <h2>Create post</h2>
 
+        <h3>Welcome {{ctrl.user.username}}</h3>
         <form ng-submit="ctrl.addPost(newPost)">
-            <label>Author:</label><input ng-model="newPost.author"/>
             <label>Post:</label><input ng-model="newPost.content"/>
             <input type="submit" value="Create"/>
         </form>

@@ -24,7 +24,7 @@ public class Database {
             String onRDS = System.getenv().get("ON_RDS");
             if (onRDS != null && onRDS.equals("1")) {
                 System.out.println("Using RDS");
-                connection = getHerokuConnection();
+                connection = getAWSConnection();
             }
             else {
                 System.out.println("Using Local database");

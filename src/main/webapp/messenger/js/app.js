@@ -3,7 +3,7 @@
     var prefix = "";
     var app = angular.module('app', ['ngRoute', 'LocalStorageModule']);
 
-    app.config(function ($routeProvider,localStorageServiceProvider) {
+    app.config(function ($routeProvider, localStorageServiceProvider) {
         localStorageServiceProvider
             .setPrefix('messenger')
             .setStorageType('localStorage')
@@ -11,14 +11,28 @@
 
         $routeProvider.when('/', {
             templateUrl: 'partials/posts.html'
-        }).
-            when('/signup', {
+        }).when('/signup', {
                 templateUrl: 'partials/signup.html',
                 controller: 'SignUpController'
-            })
+        });
     });
 
-    app.controller('SignUpController', ['$http','localStorageService', function ($http,localStorageService) {
+    app.service("userService", ['localStorageService', function (localStorageService) {
+
+        return {
+            getToken: function () {
+                return localStorageService.get('token');
+            },
+            isAuthed: function () {
+                return localStorageService.get('token') != null;
+            },
+            logout: function () {
+                localStorageService.remove('token');
+            }
+        };
+    }]);
+
+    app.controller('SignUpController', ['$http', 'localStorageService', 'userService', function ($http, localStorageService, userService) {
 
         this.login = function (username, password) {
             console.log("login called");
@@ -53,17 +67,17 @@
             });
         };
 
-        this.isAuthed = function(){
-            console.log("from isAuthed" + localStorageService.get('token'));
-            return localStorageService.get('token')!=null;
+        this.isAuthed = function () {
+            return userService.isAuthed();
         };
-        this.logout = function(){
-            localStorageService.remove('token');
+
+        this.logout = function () {
+            return userService.logout();
         };
 
 
     }]);
-    app.controller('PostController', ['$http', function ($http) {
+    app.controller('PostController', ['$http', 'localStorageService', '$location', 'userService', function ($http, localStorageService, $location, userService) {
 
         var $this = this;
         $http.get(prefix + '/api/posts/').success(function (response) {
@@ -73,6 +87,7 @@
 
 
         this.addPost = function (post) {
+            post.author = $this.user.username;
             $http.post(prefix + '/api/posts/', post).success(function (response) {
                 $this.posts.push(response);
                 return response;
@@ -80,7 +95,9 @@
         };
 
         this.deletePost = function (post) {
-            $http.delete(prefix + '/api/posts/' + post.id).success(function (response) {
+            $http.delete(prefix + '/api/posts/' + post.id, {
+                headers: {'auth-token': token}
+            }).success(function (response) {
                 $this.posts.splice($this.posts.indexOf(post), 1);
             });
         };
@@ -90,6 +107,22 @@
                 return response;
             });
         };
+        var init = function () {
+            this.token = localStorageService.get('token');
+            if (this.token == null) {
+                $location.path("/signup");
+            }
+            else {
+                $http.post(prefix + '/api/login/getUser/' + this.token).success(function (response) {
+                    $this.user = response;
+
+                    console.log(response);
+                }).error(function () {
+                    $location.path("/signup");
+                });
+            }
+        };
+        init();
 
     }]);
 

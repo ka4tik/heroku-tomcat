@@ -33,7 +33,6 @@ public class DatabaseUserService implements UserService {
             stmt.close();
             return users;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -57,7 +56,6 @@ public class DatabaseUserService implements UserService {
             p.close();
             return user;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -75,11 +73,10 @@ public class DatabaseUserService implements UserService {
             User user = getUser(username);
             PreparedStatement p = con.prepareStatement("DELETE FROM users WHERE username = ?");
             p.setString(1, username);
-            boolean ok = p.execute();
+            p.execute();
             p.close();
             return user;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
