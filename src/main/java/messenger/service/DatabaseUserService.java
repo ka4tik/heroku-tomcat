@@ -52,10 +52,10 @@ public class DatabaseUserService implements UserService {
                     , rs.getString("lastName")
                     , new Date(rs.getTimestamp("created").getTime())
             );
-            rs.close();
-            p.close();
+            System.out.println(user);
             return user;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

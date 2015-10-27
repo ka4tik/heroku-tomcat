@@ -20,7 +20,7 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    private UserService userService = new DatabaseUserService();
+    private static UserService userService = new DatabaseUserService();
 
     @GET
     public List<User> getProfiles() {

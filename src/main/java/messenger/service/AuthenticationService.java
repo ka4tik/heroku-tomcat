@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public class AuthenticationService {
 
-    private PostService postService = new DatabasePostService();
-    private UserService userService = new DatabaseUserService();
+    private static PostService postService = new DatabasePostService();
+    private static UserService userService = new DatabaseUserService();
 
     public String getToken(String username, String password) {
         try {
@@ -23,7 +23,7 @@ public class AuthenticationService {
             Connection connection = Database.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
-             password = md5(password);
+            password = md5(password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 String retrieved_password = resultSet.getString("password");
@@ -72,24 +72,25 @@ public class AuthenticationService {
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            ;
             throw new RuntimeException(e);
         }
     }
 
     public User getTokenOwner(String token) {
+        token = token.trim();
+        System.out.println("token: "+ token);
         try {
             String sql = "select username from tokens where token = ?";
             Connection connection = Database.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String username = resultSet.getString("username");
-                return userService.getUser(username);
-            } else
-                return null;
+            resultSet.next();
+            String username = resultSet.getString("username");
+            System.out.println("Token owner: " + username);
+            return userService.getUser(username);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -98,9 +99,12 @@ public class AuthenticationService {
     public boolean authenticatePostRequest(long postId, String authHeader) {
         if (null == authHeader)
             return false;
-        final String token = authHeader.replaceFirst("Bearer ", "");
+        final String token = authHeader.replaceFirst("Bearer: ", "");
+        System.out.println("token: " + token);
         String author = postService.getAuthor(postId);
         User user = getTokenOwner(token);
+        System.out.println(user);
+        System.out.println(author);
         return user != null && user.getUsername().equals(author);
     }
 

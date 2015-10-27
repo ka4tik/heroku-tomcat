@@ -1,13 +1,16 @@
 package messenger.resources;
 
 import messenger.model.Post;
+import messenger.model.User;
 import messenger.resources.beans.MessageFilterBean;
+import messenger.service.AuthenticationService;
 import messenger.service.DatabasePostService;
 import messenger.service.PostService;
 
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -24,7 +27,8 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class PostResource {
 
-    PostService postService = new DatabasePostService();
+    private static PostService postService = new DatabasePostService();
+    private static AuthenticationService authenticationService = new AuthenticationService();
 
     @GET
     public List<Post> getPosts(@BeanParam MessageFilterBean filterBean) {
@@ -39,22 +43,37 @@ public class PostResource {
 
     @POST
     public Post addPost(@HeaderParam("Authorization") String authHeader, Post post) {
-        System.out.println(authHeader);
-        return postService.addPost(post);
+        final String token = authHeader.replaceFirst("Bearer: ", "");
+        User user = authenticationService.getTokenOwner(token);
+        System.out.println(user);
+        if (user!=null && post.getAuthor().equals(user.getUsername())) {
+            return postService.addPost(post);
+        } else
+            throw new ForbiddenException();
     }
 
     @PUT
     @Path("/{postId}")
-    public Post updatePost(@HeaderParam("Authorization") String authHeader,@PathParam("postId") long id, Post post) {
-        System.out.println(authHeader);
+    public Post updatePost(@HeaderParam("Authorization") String authHeader, @PathParam("postId") long id, Post post) {
         post.setId(id);
-        return postService.updatePost(post);
+        final String token = authHeader.replaceFirst("Bearer: ", "");
+        User user = authenticationService.getTokenOwner(token);
+        if (user!=null
+                && post.getAuthor().equals(user.getUsername())
+                && authenticationService.authenticatePostRequest(id, authHeader))
+                return postService.updatePost(post);
+        else
+            throw new ForbiddenException();
+
     }
 
     @DELETE
     @Path("/{postId}")
-    public void deletePost(@PathParam("postId") long id) {
-        postService.removePost(id);
+    public void deletePost(@HeaderParam("Authorization") String authHeader, @PathParam("postId") long id) {
+        if (authenticationService.authenticatePostRequest(id, authHeader))
+            postService.removePost(id);
+        else
+            throw new ForbiddenException();
     }
 
 

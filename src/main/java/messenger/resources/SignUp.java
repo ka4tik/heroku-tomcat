@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class SignUp {
 
-    AuthenticationService authenticationService = new AuthenticationService();
-    UserService userService = new DatabaseUserService();
+    private static AuthenticationService authenticationService = new AuthenticationService();
+    private static UserService userService = new DatabaseUserService();
 
     @POST
     public Response signUp(@FormParam("username") String username,

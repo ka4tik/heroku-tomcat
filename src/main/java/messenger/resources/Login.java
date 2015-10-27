@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class Login {
 
-    AuthenticationService authenticationService = new AuthenticationService();
+    private static AuthenticationService authenticationService = new AuthenticationService();
 
     @POST
     public Response login(@FormParam("username") String username,

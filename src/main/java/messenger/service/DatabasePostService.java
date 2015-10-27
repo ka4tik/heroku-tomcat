@@ -6,7 +6,6 @@ import messenger.model.Post;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -108,7 +107,7 @@ public class DatabasePostService implements PostService {
             p.setString(1, post.getAuthor());
             p.setString(2, post.getContent());
             p.setInt(3, (int) post.getId());
-            boolean ok = p.execute();
+            p.execute();
             p.close();
             return post;
         } catch (Exception e) {
@@ -124,7 +123,7 @@ public class DatabasePostService implements PostService {
             Post post = getPost(id);
             PreparedStatement p = con.prepareStatement("DELETE FROM posts WHERE id = ?");
             p.setInt(1, (int) id);
-            boolean ok = p.execute();
+            p.execute();
             p.close();
             return post;
         } catch (Exception e) {
@@ -140,8 +139,8 @@ public class DatabasePostService implements PostService {
             PreparedStatement p = con.prepareStatement("SELECT author FROM  posts WHERE id = ?");
             p.setInt(1, (int) id);
             ResultSet rs = p.executeQuery();
-            if(rs.next())
-                rs.getString("author");
+            if (rs.next())
+                return rs.getString("author");
             else
                 return null;
 
@@ -149,6 +148,5 @@ public class DatabasePostService implements PostService {
             e.printStackTrace();
             return null;
         }
-        return null;
     }
 }

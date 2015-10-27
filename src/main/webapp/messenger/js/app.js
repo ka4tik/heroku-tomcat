@@ -12,8 +12,8 @@
         $routeProvider.when('/', {
             templateUrl: 'partials/posts.html'
         }).when('/signup', {
-                templateUrl: 'partials/signup.html',
-                controller: 'SignUpController'
+            templateUrl: 'partials/signup.html',
+            controller: 'SignUpController'
         });
     });
 
@@ -77,7 +77,7 @@
 
 
     }]);
-    app.controller('PostController', ['$http', 'localStorageService', '$location', 'userService', function ($http, localStorageService, $location, userService) {
+    app.controller('PostController', ['$http','$scope', 'localStorageService', '$location', 'userService', function ($http,$scope, localStorageService, $location, userService) {
 
         var $this = this;
         $http.get(prefix + '/api/posts/').success(function (response) {
@@ -88,7 +88,9 @@
 
         this.addPost = function (post) {
             post.author = $this.user.username;
-            $http.post(prefix + '/api/posts/', post).success(function (response) {
+            $http.post(prefix + '/api/posts/', post, {
+                headers: {'Authorization': 'Bearer: ' + userService.getToken()}
+            }).success(function (response) {
                 $this.posts.push(response);
                 return response;
             });
@@ -96,14 +98,20 @@
 
         this.deletePost = function (post) {
             $http.delete(prefix + '/api/posts/' + post.id, {
-                headers: {'auth-token': token}
+                headers: {'Authorization': 'Bearer: ' + userService.getToken()}
             }).success(function (response) {
                 $this.posts.splice($this.posts.indexOf(post), 1);
             });
         };
 
-        this.updatePost = function (post) {
-            $http.put(prefix + '/api/posts/' + post.id, post).success(function (response) {
+        this.updatePost = function (post,author,content) {
+            var updatedPost = angular.copy(post);
+            updatedPost.author = author;
+            updatedPost.content = content;
+            $http.put(prefix + '/api/posts/' + updatedPost.id, updatedPost, {
+                headers: {'Authorization': 'Bearer: ' + userService.getToken()}
+            }).success(function (response) {
+                $this.posts[$this.posts.indexOf(post)]= updatedPost;
                 return response;
             });
         };
@@ -115,7 +123,6 @@
             else {
                 $http.post(prefix + '/api/login/getUser/' + this.token).success(function (response) {
                     $this.user = response;
-
                     console.log(response);
                 }).error(function () {
                     $location.path("/signup");

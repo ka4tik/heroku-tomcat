@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CommentResource {
 
-    private CommentService commentService = new DatabaseCommentService();
+    private static CommentService commentService = new DatabaseCommentService();
 
     @GET
     public List<Comment> getAllComments(@PathParam("postId") long postId) {
